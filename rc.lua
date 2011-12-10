@@ -197,7 +197,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control"  }, "i", function () awful.client.swap.byidx( -1)    end),
     awful.key({ modkey, "Shift"    }, "u", function () awful.screen.focus_relative( 1) end),
     awful.key({ modkey, "Shift"    }, "i", function () awful.screen.focus_relative(-1) end),
-    awful.key({ modkey,            }, "u", awful.client.urgent.jumpto),
+    awful.key({ modkey,            }, "j", awful.client.urgent.jumpto),
     awful.key({ modkey,            }, "Tab",
         function ()
             awful.client.focus.history.previous()
@@ -317,24 +317,6 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-     { rule = { class = "Firefox" },
-       properties = { tag = tags[2][1] } },
-     { rule = { class = "Evolution" },
-       properties = { tag = tags[2][2] } },
-     { rule = { class = "Liferia" },
-       properties = { tag = tags[2][2] } },
-     { rule = { class = "Pidgin" },
-       properties = { tag = tags[2][3] } },
-     { rule = { class = "Skype" },
-       properties = { tag = tags[2][3] } },
-     { rule = { class = "Gwibber" },
-       properties = { tag = tags[2][3] } },
-     { rule = { class = "Eclipse" },
-       properties = { tag = tags[1][4] } },
-     { rule = { class = "Kile" },
-       properties = { tag = tags[1][2] } },
-     { rule = { class = "Thunderbird" },
-       properties = { tag = tags[2][2] } },
 }
 -- }}}
 
@@ -366,6 +348,10 @@ client.add_signal("manage", function (c, startup)
 end)
 
 awful.util.spawn_with_shell("urxvtd -f")
+awful.util.spawn_with_shell("nm-applet")
+awful.util.spawn_with_shell("gnome-session")
+awful.util.spawn_with_shell("gnome-sound-applet")
+awful.util.spawn_with_shell("setxkbmap de neo")
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
