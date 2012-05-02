@@ -348,7 +348,7 @@ client.add_signal("manage", function (c, startup)
 end)
 
 awful.util.spawn_with_shell("urxvtd -f")
-awful.util.spawn_with_shell("nm-applet")
+-- awful.util.spawn_with_shell("nm-applet")
 awful.util.spawn_with_shell("gnome-session")
 awful.util.spawn_with_shell("gnome-sound-applet")
 awful.util.spawn_with_shell("setxkbmap de neo")
