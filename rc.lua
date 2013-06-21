@@ -395,10 +395,10 @@ awful.rules.rules = {
     { rule = { class = "ding" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-    { rule = { class = "Firefox" },
-      properties = { tag = tags[2][2] } },
-    { rule = { class = "Thunderbird" },
-      properties = { tag = tags[2][3] } },
+--    { rule = { class = "Firefox" },
+--      properties = { tag = tags[2][2] } },
+--    { rule = { class = "Thunderbird" },
+--      properties = { tag = tags[2][3] } },
 }
 -- }}}
 
@@ -474,10 +474,10 @@ end)
 
 run_once("urxvtd -q -o -f")
 run_once("parcellite")
-run_once("gnome-session")
 run_once("gnome-sound-applet")
 run_once("indicator-multiload")
 run_once("wmname LG3D")
+-- run_once("gnome-session")
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
