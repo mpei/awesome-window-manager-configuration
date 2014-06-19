@@ -328,6 +328,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
+    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "a",      function(c) awful.client.movetoscreen(c,c.screen-1) end ),
     awful.key({ modkey, "Shift"   }, "a",      function(c) awful.client.movetoscreen(c,c.screen+1) end ),
@@ -494,6 +495,11 @@ run_once("wmname LG3D")
 run_once("dropbox start")
 --run_once("gnome-session")
 run_once("gnome-settings-daemon")
+run_once("wmname LG3D")
+-- run_once("gnome-session")
+run_once("gnome-sound-applet")
+run_once("indicator-multiload")
+run_once("owncloud")
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
