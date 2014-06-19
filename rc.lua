@@ -1,3 +1,13 @@
+-- Override awesome.quit when we're using GNOME
+_awesome_quit = awesome.quit
+awesome.quit = function()
+    if os.getenv("DESKTOP_SESSION") == "awesome-gnome" then
+       os.execute("/usr/bin/gnome-session-quit")
+    else
+    _awesome_quit()
+    end
+end
+
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -45,13 +55,16 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/home/"..os.getenv("USER").."/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtc"
 pw = "keepassx"
 browser = "luakit"
-fm = "nautilus"
+--fm = "nautilus"
+--fm = "xfc"
+--fm = "thunar"
+fm = "pcmanfm"
 editor = "vim"
 geditor = "gvim"
 editor_cmd = terminal .. " -e " .. editor
@@ -316,10 +329,11 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
- awful.key({ modkey,           }, "a",      function(c) awful.client.movetoscreen(c,c.screen-1) end ),
- awful.key({ modkey, "Shift"   }, "a",      function(c) awful.client.movetoscreen(c,c.screen+1) end ),
+    awful.key({ modkey,           }, "a",      function(c) awful.client.movetoscreen(c,c.screen-1) end ),
+    awful.key({ modkey, "Shift"   }, "a",      function(c) awful.client.movetoscreen(c,c.screen+1) end ),
     awful.key({ modkey,           }, "n",
-        function (c)
+    awful.key({ modkey, "Shift"   }, "t", function(c) awful.client.floating.toggle() c.ontop = not c.ontop end),
+    function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
@@ -471,13 +485,15 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
-
+run_once("dropbox start")
 run_once("urxvtd -q -o -f")
-run_once("parcellite")
-run_once("gnome-sound-applet")
+-- run_once("parcellite")
+-- run_once("gnome-sound-applet")
 run_once("indicator-multiload")
 run_once("wmname LG3D")
--- run_once("gnome-session")
+run_once("dropbox start")
+--run_once("gnome-session")
+run_once("gnome-settings-daemon")
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

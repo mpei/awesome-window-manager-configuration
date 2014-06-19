@@ -5,7 +5,8 @@ local naughty = require("naughty")
 kbdcfg = {}
         kbdcfg.cmd = "setxkbmap"
         kbdcfg.layout = {
-                { "cz", "dvorak -option ctrl:nocaps"},
+                { "de neo", ""},
+                { "de", ""},
                 { "us", "-variant dvp -option compose:102 -option keypad:atm -option ctrl:nocaps -option numpad:shift3 -option kpdl:semi"}
         }
         kbdcfg.current = 1  -- us is our default layout
