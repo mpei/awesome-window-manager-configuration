@@ -17,6 +17,7 @@ require("awful.autofocus")
 local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
+
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
@@ -27,6 +28,33 @@ local r = require("myrc.run_once")
 -- Load Debian menu entries
 local debian_menu = require("debian_menu")
 
+--FreeDesktop
+require('freedesktop.utils')
+require('freedesktop.menu')
+freedesktop.utils.icon_theme = 'gnome'
+
+-- Obvious
+local obvious = require("obvious")
+require("obvious.volume_alsa")
+require("obvious.battery")
+require("obvious.temp_info")
+
+-- Vicious
+local vicious = require("vicious")
+
+-- DBus
+local dbus = require("dbus")
+
+-- Initialize widget
+--memwidget = wibox.widget.textbox()
+-- Register widget
+--vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)", 13)
+
+--{{ Battery Widget }} --
+baticon = wibox.widget.imagebox()
+baticon:set_image(beautiful.baticon)
+batwidget = wibox.widget.textbox()
+vicious.register( batwidget, vicious.widgets.bat, '<span background="#92B0A0" font="Inconsolata 11"><span font="Inconsolata 11" color="#FFFFFF" background="#92B0A0">$1$2% </span></span>', 30, "BAT0" )
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -122,6 +150,14 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
+--menu_items = freedesktop.menu.new()
+--myawesomemenu = {
+--{ "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
+--{ "edit config", editor_cmd .. " " .. awesome.conffile, freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+--{ "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) },
+--{ "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) }
+--}
+
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "Debian", debian_menu.Debian },
                                     { "open terminal", terminal },
@@ -191,6 +227,16 @@ mytasklist.buttons = awful.util.table.join(
                                               if client.focus then client.focus:raise() end
                                           end))
 
+-- Widgets
+spacer = wibox.widget.textbox()
+spacer:set_text(' | ')
+--Weather Widget
+weather = wibox.widget.textbox()
+vicious.register(weather, vicious.widgets.weather, "Weather: ${city}. Sky: ${sky}. Temp: ${tempc}c Humid: ${humid}%. Wind: ${windkmh} KM/h", 1200, "YMML")
+--Battery Widget
+batt = wibox.widget.textbox()
+vicious.register(batt, vicious.widgets.bat, "Batt: $2% Rem: $3", 61, "BAT1")
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
@@ -220,6 +266,18 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    --right_layout:add(cpuicon)
+    --right_layout:add(cpu)
+    --right_layout:add(spacer)
+    --right_layout:add(baticon)
+    --right_layout:add(batpct)
+    --right_layout:add(spacer)
+    --right_layout:add(volicon)
+    --right_layout:add(volpct)
+    --right_layout:add(volspace)
+    --right_layout:add(spacer)
+    right_layout:add(baticon)
+    right_layout:add(batwidget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -489,16 +547,16 @@ client.connect_signal("manage", function (c, startup)
 end)
 
 run_once("urxvtd -q -o -f")
--- run_once("parcellite")
+run_once("parcellite")
 -- run_once("gnome-sound-applet")
-run_once("indicator-multiload")
 run_once("wmname LG3D")
 --run_once("gnome-session")
-run_once("gnome-settings-daemon")
+-- run_once("gnome-settings-daemon")
 run_once("wmname LG3D")
 -- run_once("gnome-session")
-run_once("gnome-sound-applet")
+-- run_once("gnome-sound-applet")
 run_once("indicator-multiload")
+run_once("volti")
 run_once("owncloud")
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
