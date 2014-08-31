@@ -56,6 +56,24 @@ baticon:set_image(beautiful.baticon)
 batwidget = wibox.widget.textbox()
 vicious.register( batwidget, vicious.widgets.bat, '<span background="#92B0A0" font="Inconsolata 11"><span font="Inconsolata 11" color="#FFFFFF" background="#92B0A0">$1$2% </span></span>', 30, "BAT0" )
 
+----{{--| Volume / volume icon |----------
+volume = wibox.widget.textbox()
+vicious.register(volume, vicious.widgets.volume,
+'<span background="#4B3B51" font="Inconsolata 11"><span font="Inconsolata 11" color="#EEEEEE"> Vol:$1 </span></span>', 0.3, "Master")
+volumeicon = wibox.widget.imagebox()
+vicious.register(volumeicon, vicious.widgets.volume, function(widget, args)
+local paraone = tonumber(args[1])
+if args[2] == "♩" or paraone == 0 then
+volumeicon:set_image(beautiful.mute)
+elseif paraone >= 67 and paraone <= 100 then
+volumeicon:set_image(beautiful.volhi)
+elseif paraone >= 33 and paraone <= 66 then
+volumeicon:set_image(beautiful.volmed)
+else
+volumeicon:set_image(beautiful.vollow)
+end
+end, 0.3, "Master")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -276,10 +294,17 @@ for s = 1, screen.count() do
     --right_layout:add(volpct)
     --right_layout:add(volspace)
     --right_layout:add(spacer)
+    right_layout:add(spacer)
     right_layout:add(baticon)
     right_layout:add(batwidget)
+    right_layout:add(spacer)
+    right_layout:add(volumeicon)
+    right_layout:add(volume)
+    right_layout:add(spacer)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
+
+
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -556,7 +581,7 @@ run_once("wmname LG3D")
 -- run_once("gnome-session")
 -- run_once("gnome-sound-applet")
 run_once("indicator-multiload")
-run_once("volti")
+-- run_once("volti")
 run_once("owncloud")
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
