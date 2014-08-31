@@ -82,6 +82,7 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.tile,
+    awful.layout.suit.floating,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
@@ -91,8 +92,7 @@ local layouts =
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.floating
+    awful.layout.suit.magnifier
 }
 -- }}}
 
@@ -403,6 +403,8 @@ awful.rules.rules = {
                      buttons = clientbuttons } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
+    { rule = { class = "jmol" },
+      properties = { floating = true } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
@@ -486,13 +488,11 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
-run_once("dropbox start")
 run_once("urxvtd -q -o -f")
 -- run_once("parcellite")
 -- run_once("gnome-sound-applet")
 run_once("indicator-multiload")
 run_once("wmname LG3D")
-run_once("dropbox start")
 --run_once("gnome-session")
 run_once("gnome-settings-daemon")
 run_once("wmname LG3D")
